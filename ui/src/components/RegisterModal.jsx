@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import PropTypes from 'prop-types';
 import Grid2 from '@mui/material/Unstable_Grid2';
+import axios, { isCancel, AxiosError } from 'axios';
 import { Form } from 'react-router-dom';
 
 const style = {
@@ -21,6 +22,27 @@ const style = {
   p: 4,
   flexGrow: 1,
 
+};
+
+// action={({ request }) => {
+//   const formData = await request.formData();
+
+const registerAction = async ({ request }) => {
+  const data = await request.formData();
+  console.log(data.get('email'));
+  console.log(data.get('firstName'));
+  console.log(data.get('lastName'));
+  console.log(data.get('username'));
+  console.log(data.get('password'));
+  axios.post('http://localhost:8081/users',
+    {
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName'),
+      email: data.get('email'),
+      username: data.get('username'),
+      password: data.get('password'),
+    });
+  return data;
 };
 
 const RegisterModal = ({ isOpen, setIsOpen }) => {
@@ -45,22 +67,37 @@ const RegisterModal = ({ isOpen, setIsOpen }) => {
       >
         <Fade in={isOpen}>
           <Box sx={style}>
-            <Form method='post'>
+            <Form method='post' action='/'>
               <Grid2 container spacing={2}>
                 <Grid2 xs={6}>
-                  <TextField label='First Name' fullWidth />
+                  <TextField
+                    label='First Name'
+                    fullWidth
+                    inputProps={{ name: 'firstName', required: true }} />
                 </Grid2>
                 <Grid2 xs={6}>
-                  <TextField label='Last Name' fullWidth />
+                  <TextField
+                    label='Last Name'
+                    fullWidth
+                    inputProps={{ name: 'lastName', required: true }} />
                 </Grid2>
                 <Grid2 xs={12}>
-                  <TextField label='Email Address' fullWidth />
+                  <TextField
+                    label='Email Address'
+                    fullWidth
+                    inputProps={{ name: 'email', type: 'email', required: true }} />
                 </Grid2>
                 <Grid2 xs={6}>
-                  <TextField label='Username' fullWidth />
+                  <TextField
+                    label='Username'
+                    fullWidth
+                    inputProps={{ name: 'username', required: true }} />
                 </Grid2>
                 <Grid2 xs={6}>
-                  <TextField label='Password' fullWidth />
+                  <TextField
+                    label='Password'
+                    fullWidth
+                    inputProps={{ name: 'password', type: 'password', required: true }} />
                 </Grid2>
                 <Grid2 xs={7} />
                 <Grid2 xs={5}>
@@ -84,3 +121,4 @@ RegisterModal.propTypes = {
 };
 
 export default RegisterModal;
+export { registerAction };
