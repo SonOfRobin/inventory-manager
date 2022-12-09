@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Outlet, redirect } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import useSessionStorage from '../hooks/useSessionStorage';
 
 
 const AuthWrapper = () => {
-  const [credentials, setCredentials] = useState({ uToken: '', username: '' });
-
+  const [user, setUser] = useSessionStorage('user', { auth: '', user: '' });
   return (
-    <>
-      <Outlet />
-    </>
+    <Outlet context={[user, setUser]} />
   );
 };
+
+export default AuthWrapper;

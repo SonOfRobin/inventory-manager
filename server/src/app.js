@@ -5,6 +5,8 @@ const { randomBytes } = require('node:crypto');
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const app = express();
 
 app.use(cors());
@@ -23,6 +25,7 @@ app.get('/users', (req, res) => {
   knex('users')
     .select('*')
     .then(users => {
+      console.log(users);
       let responseData = users.map(user => ({
         firstName: user.f_name,
         lastName: user.l_name,
@@ -33,30 +36,42 @@ app.get('/users', (req, res) => {
 
 });
 
-app.post('/users', (req, res) => {
-  const { firstName, lastName, email, username, password } = req.body;
-  knex('users')
-    .insert({
-      f_name: firstName,
-      l_name: lastName,
-      email: email,
-      username: username,
-      password: password,
-    }, ['username'])
-    .then(result => res.json({ msg: `First: ${firstName} last: ${lastName} added \n${result}` }));
+app.post('/users', async (req, res) => {
+  const { firstName, lastName, email, username, } = req.body;
+  const plain = req.body.password;
+  bcrypt.hash(plain, saltRounds, (err, hash) => {
+    knex('users')
+      .insert({
+        f_name: firstName,
+        l_name: lastName,
+        email: email,
+        username: username,
+        password: hash,
+      }, ['username'])
+      .then(result => res.json({ msg: `First: ${firstName} last: ${lastName} added \n${result}` }));
+  });
 });
 
-app.post('/login', (req, res) => {
-  const { username, password } = req.body;
+app.post('/login', async (req, res) => {
+  const { username } = req.body;
+  const plain = req.body.password;
   knex('users')
-    .select('username')
+    .select('username', 'password')
     .where('username', username)
-    .andWhere('password', password)
     .then(result => {
       if (result[0]) {
-        console.log(result);
-        const token = randomBytes(256);
-        res.status(200).send(token.toString('hex'));
+        console.log(result[0]);
+        console.log(`${plain} =? ${result[0].password}`);
+        bcrypt.compare(plain, result[0].password, (err, result) => {
+          if (result) {
+            console.log(result);
+            const token = randomBytes(256);
+            res.status(200).send(token.toString('hex'));
+          }
+          else {
+            res.status(401).send(result);
+          }
+        });
       }
       else {
         res.status(401).send(null);

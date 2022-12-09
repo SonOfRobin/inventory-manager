@@ -1,9 +1,10 @@
 import React from 'react';
+import { useOutletContext } from 'react-router-dom';
 
 const UserHome = () => {
-
+  const [user] = useOutletContext();
   return (
-    <h1>Login successful!!</h1>
+    <h1>{`Login successful!!. Welcome, ${user.user}`}</h1>
   );
 };
 

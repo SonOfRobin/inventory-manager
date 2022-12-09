@@ -7,7 +7,6 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import PropTypes from 'prop-types';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import axios, { isCancel, AxiosError } from 'axios';
 import { Form } from 'react-router-dom';
 
 const style = {
@@ -22,30 +21,6 @@ const style = {
   p: 4,
   flexGrow: 1,
 
-};
-
-// action={({ request }) => {
-//   const formData = await request.formData();
-
-const registerAction = async ({ request }) => {
-  const data = await request.formData();
-  const {
-    firstName,
-    lastName,
-    email,
-    username,
-    password
-  } = Object.fromEntries(data);
-  console.log(`${firstName}\n${lastName}\n${email}\n${username}\n${password}`);
-  // axios.post('http://localhost:8081/users',
-  //   {
-  //     firstName: data.get('firstName'),
-  //     lastName: data.get('lastName'),
-  //     email: data.get('email'),
-  //     username: data.get('username'),
-  //     password: data.get('password'),
-  //   });
-  return (`${username}\n${password}`);
 };
 
 const RegisterModal = ({ isOpen, setIsOpen }) => {
@@ -70,7 +45,7 @@ const RegisterModal = ({ isOpen, setIsOpen }) => {
       >
         <Fade in={isOpen}>
           <Box sx={style}>
-            <Form method='post' action='/'>
+            <Form method='post' action='/register'>
               <Grid2 container spacing={2}>
                 <Grid2 xs={6}>
                   <TextField
@@ -124,4 +99,3 @@ RegisterModal.propTypes = {
 };
 
 export default RegisterModal;
-export { registerAction };

@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import LoginModal from '../components/LoginModal';
 import RegisterModal from '../components/RegisterModal';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 
 const Root = () => {
   const [regModal, setRegModal] = useState(false);
   const [logModal, setLogModal] = useState(false);
-  const [token, setToken] = useState({});
-  const [credentials, setCredentials] = useState({ uToken: '', username: '' });
+  const [user] = useOutletContext();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user.auth) navigate('/main');
+  }, [user]);
+
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -20,6 +27,9 @@ const Root = () => {
     e.preventDefault();
     setLogModal(!logModal);
   };
+
+  console.log('Root context obj: ', user);
+
 
 
   return (
@@ -49,13 +59,8 @@ const Root = () => {
           Signup
         </Button>
       </Stack>
-      <LoginModal
-        isOpen={logModal}
-        setIsOpen={setLogModal}
-        setToken={setToken}
-        setCredentials={setCredentials} />
+      <LoginModal isOpen={logModal} setIsOpen={setLogModal} />
       <RegisterModal isOpen={regModal} setIsOpen={setRegModal} />
-
     </Box>
   );
 };
