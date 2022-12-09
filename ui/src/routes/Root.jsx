@@ -8,6 +8,8 @@ import RegisterModal from '../components/RegisterModal';
 const Root = () => {
   const [regModal, setRegModal] = useState(false);
   const [logModal, setLogModal] = useState(false);
+  const [token, setToken] = useState({});
+  const [credentials, setCredentials] = useState({ uToken: '', username: '' });
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -17,7 +19,7 @@ const Root = () => {
   const handleLog = (e) => {
     e.preventDefault();
     setLogModal(!logModal);
-  }
+  };
 
 
   return (
@@ -47,8 +49,13 @@ const Root = () => {
           Signup
         </Button>
       </Stack>
-      <LoginModal isOpen={logModal} setIsOpen={setLogModal} />
+      <LoginModal
+        isOpen={logModal}
+        setIsOpen={setLogModal}
+        setToken={setToken}
+        setCredentials={setCredentials} />
       <RegisterModal isOpen={regModal} setIsOpen={setRegModal} />
+
     </Box>
   );
 };

@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import PropTypes from 'prop-types';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import axios, { isCancel, AxiosError } from 'axios';
-import { Form, useFetcher } from 'react-router-dom';
+import { useFetcher } from 'react-router-dom';
 
 const style = {
   position: 'absolute',
@@ -25,22 +25,34 @@ const style = {
 };
 
 const loginAction = async ({ request }) => {
-  const data = await request.formData();
-  console.log(data.get('username'));
-  console.log(data.get('password'));
-  axios.post('http://localhost:8081/users',
+  const { username, password } = Object.fromEntries(await request?.formData());
+  console.log(`'From the route action: ' ${username}, ${password}`);
+
+  const token = await axios.post(('http://localhost:8081/login'),
     {
-      username: data.get('username'),
-      password: data.get('password'),
-    });
-  return data;
+      username: username,
+      password: password,
+    }
+  );
+  console.log(token);
+  return { token: token, username: username };
 };
 
-const LoginModal = ({ isOpen, setIsOpen }) => {
-
+const LoginModal = ({ isOpen, setIsOpen, setToken, setCredentials }) => {
   const fetcher = useFetcher();
+  // useEffect(() => {
+  //   if (fetcher.formData) {
+  //     const testing = async () => {
+  //       const data = Object.fromEntries(fetcher?.formData);
+  //       console.log('From the use effect: ', data);
+  //     };
+  //     testing();
+  //   }
+  // }, [fetcher]);
 
   const handleClose = () => setIsOpen(!isOpen);
+
+
 
   return (
     <>
@@ -55,7 +67,7 @@ const LoginModal = ({ isOpen, setIsOpen }) => {
       >
         <Fade in={isOpen}>
           <Box sx={style}>
-            <fetcher.Form method='post' action='/'>
+            <fetcher.Form method='post' action='/?index'>
               <Grid2 container spacing={2}>
                 <Grid2 xs={6}>
                   <TextField
@@ -88,6 +100,8 @@ const LoginModal = ({ isOpen, setIsOpen }) => {
 LoginModal.propTypes = {
   isOpen: PropTypes.bool,
   setIsOpen: PropTypes.func,
+  setToken: PropTypes.func,
+  setCredentials: PropTypes.func,
 };
 
 export default LoginModal;

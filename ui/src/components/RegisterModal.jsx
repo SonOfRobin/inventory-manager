@@ -29,20 +29,23 @@ const style = {
 
 const registerAction = async ({ request }) => {
   const data = await request.formData();
-  console.log(data.get('email'));
-  console.log(data.get('firstName'));
-  console.log(data.get('lastName'));
-  console.log(data.get('username'));
-  console.log(data.get('password'));
-  axios.post('http://localhost:8081/users',
-    {
-      firstName: data.get('firstName'),
-      lastName: data.get('lastName'),
-      email: data.get('email'),
-      username: data.get('username'),
-      password: data.get('password'),
-    });
-  return data;
+  const {
+    firstName,
+    lastName,
+    email,
+    username,
+    password
+  } = Object.fromEntries(data);
+  console.log(`${firstName}\n${lastName}\n${email}\n${username}\n${password}`);
+  // axios.post('http://localhost:8081/users',
+  //   {
+  //     firstName: data.get('firstName'),
+  //     lastName: data.get('lastName'),
+  //     email: data.get('email'),
+  //     username: data.get('username'),
+  //     password: data.get('password'),
+  //   });
+  return (`${username}\n${password}`);
 };
 
 const RegisterModal = ({ isOpen, setIsOpen }) => {

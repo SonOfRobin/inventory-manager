@@ -1,6 +1,7 @@
 if (process.env.NODE_ENV === 'development') {
   require('dotenv').config();
 }
+const { randomBytes } = require('node:crypto');
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -43,6 +44,24 @@ app.post('/users', (req, res) => {
       password: password,
     }, ['username'])
     .then(result => res.json({ msg: `First: ${firstName} last: ${lastName} added \n${result}` }));
+});
+
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  knex('users')
+    .select('username')
+    .where('username', username)
+    .andWhere('password', password)
+    .then(result => {
+      if (result[0]) {
+        console.log(result);
+        const token = randomBytes(256);
+        res.status(200).send(token.toString('hex'));
+      }
+      else {
+        res.status(401).send(null);
+      }
+    });
 });
 
 module.exports = app;
