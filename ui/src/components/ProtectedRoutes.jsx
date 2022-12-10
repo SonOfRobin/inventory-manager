@@ -1,6 +1,7 @@
-import React from "react";
-import { useEffect } from "react";
-import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
+import React from 'react';
+import { useEffect } from 'react';
+import { Outlet, useNavigate, useOutletContext } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const ProtectedRoutes = () => {
   const [user, setUser] = useOutletContext();
@@ -12,7 +13,12 @@ const ProtectedRoutes = () => {
     if (!user.auth) navigate('/');
   }, [user]);
 
-  return <Outlet context={[user, setUser]} />;
+  return (
+    <>
+      <Navbar />
+      <Outlet context={[user, setUser]} />
+    </>
+  );
 
 };
 
