@@ -11,11 +11,12 @@ const loginAction = async ({ request }) => {
     }
   );
   console.log('login action: ', token);
-  if (token.data) {
-    sessionStorage.setItem('user', JSON.stringify({ auth: token.data, user: username, }));
+  if (token.data.auth) {
+    sessionStorage.setItem('user', JSON.stringify({ auth: token.data.auth, user: username, id: token.data.id }));
     return {
-      auth: token.data,
+      auth: token.data.auth,
       user: username,
+      id: token.data.id,
     };
   }
   return null;

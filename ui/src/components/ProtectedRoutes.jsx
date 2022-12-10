@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { Outlet, useNavigate, useOutletContext } from 'react-router-dom';
 import Navbar from './Navbar';
+import Box from '@mui/material/Box';
 
 const ProtectedRoutes = () => {
   const [user, setUser] = useOutletContext();
@@ -14,10 +15,12 @@ const ProtectedRoutes = () => {
   }, [user]);
 
   return (
-    <>
+    <div class='route-layout' style={{ height: '100vh' }}>
       <Navbar />
-      <Outlet context={[user, setUser]} />
-    </>
+      <Box className='page-content' width={1} >
+        <Outlet context={[user, setUser]} />
+      </Box>
+    </div>
   );
 
 };

@@ -8,7 +8,6 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 
@@ -36,89 +35,48 @@ const Navbar = () => {
   return (
     <>
       <AppBar position='static'>
-        <Container maxWidth='xl'>
-          <ToolBar disableGutters>
-            <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
+        <ToolBar>
+          <Box sx={{ flexGrow: 1, display: 'flex' }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
             >
-              LOGO
-            </Typography>
-
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
+              <MenuIcon />
+            </IconButton>
+          </Box>
+          <Box>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar sx={{ color: '#32a852', bgcolor: 'secondary' }} >Z</Avatar>
               </IconButton>
-            </Box>
-            <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href=""
-              sx={{
-                mr: 2,
-                display: { xs: 'flex', md: 'none' },
-                flexGrow: 1,
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
+            </Tooltip>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
               }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
             >
-              LOGO
-            </Typography>
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: '45px' }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-          </ToolBar>
-        </Container>
+              {settings.map((option) => (
+                <MenuItem key={option} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{option}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+        </ToolBar>
       </AppBar>
     </>
   );

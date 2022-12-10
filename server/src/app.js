@@ -36,6 +36,17 @@ app.get('/users', (req, res) => {
 
 });
 
+app.get('/user/:id', (req, res) => {
+  const { id } = req.params;
+  knex('items')
+    .select('*')
+    .where('user', id)
+    .then(items => {
+      const data = items.map((item) => item);
+      res.status(200).send(data);
+    });
+});
+
 app.post('/users', async (req, res) => {
   const { firstName, lastName, email, username, } = req.body;
   const plain = req.body.password;
@@ -56,17 +67,17 @@ app.post('/login', async (req, res) => {
   const { username } = req.body;
   const plain = req.body.password;
   knex('users')
-    .select('username', 'password')
+    .select('username', 'password', 'id')
     .where('username', username)
     .then(result => {
       if (result[0]) {
         console.log(result[0]);
         console.log(`${plain} =? ${result[0].password}`);
-        bcrypt.compare(plain, result[0].password, (err, result) => {
-          if (result) {
-            console.log(result);
+        bcrypt.compare(plain, result[0].password, (err, isMatch) => {
+          if (isMatch) {
+            console.log(isMatch);
             const token = randomBytes(256);
-            res.status(200).send(token.toString('hex'));
+            res.status(200).send({ auth: token.toString('hex'), id: result[0].id });
           }
           else {
             res.status(401).send(result);

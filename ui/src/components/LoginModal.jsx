@@ -42,6 +42,7 @@ const LoginModal = ({ isOpen, setIsOpen }) => {
               <Grid2 container spacing={2}>
                 <Grid2 xs={6}>
                   <TextField
+                    focused
                     label='Username'
                     fullWidth
                     inputProps={{ name: 'username', required: true }} />
