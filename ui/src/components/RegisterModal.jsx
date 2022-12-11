@@ -77,8 +77,8 @@ const RegisterModal = ({ isOpen, setIsOpen }) => {
                     fullWidth
                     inputProps={{ name: 'password', type: 'password', required: true }} />
                 </Grid2>
-                <Grid2 xs={7} />
-                <Grid2 xs={5}>
+                <Grid2 xs={10} />
+                <Grid2 xs={2}>
                   <Button variant='contained' color='secondary' type='submit'>
                     Create Account
                   </Button>

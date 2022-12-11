@@ -15,12 +15,12 @@ const ProtectedRoutes = () => {
   }, [user]);
 
   return (
-    <div class='route-layout' style={{ height: '100vh' }}>
+    <Box className='route-layout' height='100vh'>
       <Navbar />
       <Box className='page-content' width={1} >
         <Outlet context={[user, setUser]} />
       </Box>
-    </div>
+    </Box>
   );
 
 };

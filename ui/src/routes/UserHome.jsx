@@ -1,28 +1,26 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import DataTable from '../components/DataTable';
 import Box from '@mui/material/Box';
-import axios from 'axios';
-
-
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import AddIcon from '@mui/icons-material/Add';
+import NewItemModal from '../components/NewItemModal';
 
 const UserHome = () => {
   const [user] = useOutletContext();
-  const [tableData, setTableData] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await axios.get(`http://localhost:8081/user/${user.id}`)
-      console.log(res.data);
-      setTableData(res.data);
-    };
-    if (user.auth) fetchData();
-  }, [user.id, user.auth]);
+  const handleModal = (e) => {
+    e.preventDefault();
+    setOpenModal(!openModal);
+  };
 
   const columns = [
     {
       field: 'item_name',
+      editable: true,
       headerName: 'Product',
       flex: .4,
       headerAlign: 'center',
@@ -34,6 +32,7 @@ const UserHome = () => {
       flex: 1,
       headerAlign: 'center',
       align: 'center',
+      editable: true,
     },
     {
       field: 'quantity',
@@ -41,6 +40,8 @@ const UserHome = () => {
       flex: .3,
       headerAlign: 'center',
       align: 'center',
+      editable: true,
+      type: 'number',
     },
   ];
 
@@ -50,6 +51,7 @@ const UserHome = () => {
       height='100vh'
       display='flex'
       flexWrap='wrap'
+      overflow='hidden'
       flexDirection='column'
       alignContent='center'
       justifyContent='center'
@@ -59,12 +61,30 @@ const UserHome = () => {
         className='grid'
         height='80%'
         width={.8}
-        display='flex'
-        alignContent='center'
-        justifyContent='center'
+        flexDirection='column'
       >
-        <DataTable rows={tableData} columns={columns} />
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          spacing={2}
+          mb={2}
+        >
+          <Button
+            onClick={handleModal}
+            variant='contained'
+            color='primary'
+            startIcon={<AddIcon />}
+          >
+            Product
+          </Button>
+        </Stack>
+        <DataTable
+          user={user}
+          columns={columns}
+        />
       </Box>
+      <NewItemModal isOpen={openModal} setIsOpen={setOpenModal} uid={user.id} />
     </Box>
   );
 };

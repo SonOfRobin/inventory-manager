@@ -1,8 +1,22 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { DataGrid, gridClasses } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  gridClasses,
+  GridToolbar,
+  GridActionsCellItem,
+  GridRowModes
+} from '@mui/x-data-grid';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import ClearIcon from '@mui/icons-material/Clear';
+import EditIcon from '@mui/icons-material/Edit';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import axios from 'axios';
+
 
 const StyledGridOverlay = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -70,9 +84,20 @@ const CustomNoRowsOverlay = () => {
 };
 
 
-const DataTable = ({ columns, rows }) => {
+const DataTable = ({ columns, user }) => {
+  const [tableData, setTableData] = useState([]);
+  const [rowModesModel, setRowModesModel] = useState({});
 
-  const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(`http://localhost:8081/user/${user.id}`);
+      console.log(res.data);
+      setTableData(res.data);
+    };
+    if (user.auth) fetchData();
+  }, [user.id, user.auth]);
+
+  const StripedDataGrid = styled(DataGrid)(() => ({
     [`& .${gridClasses.row}.even`]: {
       backgroundColor: '#cfcfcf',
     },
@@ -81,11 +106,98 @@ const DataTable = ({ columns, rows }) => {
     },
   }));
 
+  const handleRowEditStart = (params, event) => {
+    event.defaultMuiPrevented = true;
+  };
+
+  const handleRowEditStop = (params, event) => {
+    event.defaultMuiPrevented = true;
+  };
+
+  const handleEditClick = (id) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+  };
+
+  const handleSaveClick = (id) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  };
+
+  const handleDeleteClick = (id) => () => {
+    setTableData(tableData.filter((row) => row.id !== id));
+  };
+
+  const handleCancelClick = (id) => () => {
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.View, ignoreModifications: true },
+    });
+
+    const editedRow = tableData.find((row) => row.id === id);
+    if (editedRow.isNew) {
+      setTableData(tableData.filter((row) => row.id !== id));
+    }
+  };
+
+  const processRowUpdate = (newRow) => {
+    const updatedRow = { ...newRow, isNew: false };
+    setTableData(tableData.map((row) => (row.id === newRow.id ? updatedRow : row)));
+    return updatedRow;
+  };
+
+  const userActions = [
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      type: 'actions',
+      getActions: (params) => {
+        const isInEditMode = rowModesModel[params.id]?.mode === GridRowModes.Edit;
+
+        if (isInEditMode) {
+          return [
+            <GridActionsCellItem
+              key={params.id}
+              icon={<SaveAltIcon />}
+              label="Save"
+              onClick={handleSaveClick(params.id)}
+            />,
+            <GridActionsCellItem
+              key={params.id}
+              icon={<ClearIcon />}
+              label="Cancel"
+              className="textPrimary"
+              onClick={handleCancelClick(params.id)}
+              color="inherit"
+            />,
+          ];
+        }
+
+        return [
+          <GridActionsCellItem
+            key={params.id}
+            icon={<EditIcon />}
+            label="Edit"
+            className="textPrimary"
+            onClick={handleEditClick(params.id)}
+            color="inherit"
+          />,
+          <GridActionsCellItem
+            key={params.id}
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={handleDeleteClick(params.id)}
+            color="inherit"
+          />,
+        ];
+      }
+    },
+  ];
+
   return (
     <StripedDataGrid
       sx={{ bgcolor: '#888888' }}
       components={{
         NoRowsOverlay: CustomNoRowsOverlay,
+        Toolbar: GridToolbar,
       }}
       initialState={{
         pagination: {
@@ -95,16 +207,23 @@ const DataTable = ({ columns, rows }) => {
       getRowClassName={(params) =>
         params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
       }
-      columns={columns}
-      rows={rows}
+      editMode="row"
+      rowModesModel={rowModesModel}
+      onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
+      onRowEditStart={handleRowEditStart}
+      onRowEditStop={handleRowEditStop}
+      processRowUpdate={processRowUpdate}
+      columns={[...columns, ...userActions]}
+      rows={tableData}
       disableSelectionOnClick
       rowsPerPageOptions={[25, 50, 100]}
+      experimentalFeatures={{ newEditingApi: true }}
     />
   );
 };
 
 DataTable.propTypes = {
   columns: PropTypes.array,
-  rows: PropTypes.array,
+  user: PropTypes.object,
 };
 export default DataTable;

@@ -9,6 +9,7 @@ import { createBrowserRouter, RouterProvider, useFetcher } from 'react-router-do
 import Root from './routes/Root';
 import registerAction from './actions/registerAction';
 import loginAction from './actions/loginAction';
+import newItemAction from './actions/newItemAction';
 import ErrorPage from './error-page';
 import RootTheme from './RootTheme';
 import { ThemeProvider } from '@mui/material/styles';
@@ -18,17 +19,18 @@ import Login from './routes/Login';
 import Register from './routes/Register';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import PublicRoutes from './components/PublicRoutes';
+import CreationBanner from './components/CreationBanner';
 
 
 
 const router = createBrowserRouter([
   {
     element: <AuthWrapper />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: '/',
         element: <Root />,
-        errorElement: <ErrorPage />,
         // action: async (e) => {
         //   console.log(e);
         //   console.log(e?.request);
@@ -59,6 +61,14 @@ const router = createBrowserRouter([
             path: '/main',
             element: <UserHome />,
             errorElement: <ErrorPage />,
+            action: newItemAction,
+            children: [
+              // {
+              //   path: '/main/create-success',
+              //   action: newItemAction,
+              //   element: <CreationBanner type='success' />,
+              // },
+            ]
           },
         ]
       },

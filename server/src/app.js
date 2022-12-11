@@ -90,4 +90,16 @@ app.post('/login', async (req, res) => {
     });
 });
 
+app.post('/user/create-item', async (req, res) => {
+  const { product, description, quantity, user } = req.body;
+  knex('items')
+    .insert({
+      user: user,
+      item_name: product,
+      description: description,
+      quantity: Number.parseInt(quantity),
+    }, ['id', 'item_name'])
+    .then(result => res.json({ msg: `Product: ${product} of quantity (${quantity})  has been added \n${JSON.stringify(result)}` }));
+});
+
 module.exports = app;

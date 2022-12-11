@@ -7,9 +7,8 @@ const { faker } = require('@faker-js/faker');
 const createFakeInventory = () => {
   const fakeInventory = [];
   for (let i = 0; i < 500; i++) {
-    const num = i % 2 === 0 ? 2 : 3;
     const item = {
-      user: num,
+      user: Math.ceil(Math.random() * 3),
       item_name: faker.commerce.productName(),
       description: faker.commerce.productDescription(),
       quantity: faker.datatype.number({ min: 0, max: 100 }),

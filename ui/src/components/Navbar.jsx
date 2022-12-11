@@ -10,10 +10,12 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
+import { useOutletContext } from 'react-router-dom';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const Navbar = () => {
+  const [user] = useOutletContext();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -51,7 +53,7 @@ const Navbar = () => {
           <Box>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar sx={{ color: '#32a852', bgcolor: 'secondary' }} >Z</Avatar>
+                <Avatar sx={{ color: '#32a852', bgcolor: 'secondary' }} >{user.user[0]}</Avatar>
               </IconButton>
             </Tooltip>
             <Menu

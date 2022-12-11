@@ -12,7 +12,7 @@ const HOST = process.env.DATABASE_HOST || '127.0.0.1';
 const USER = process.env.POSTGRES_USER || 'postgres';
 const PASSWORD = process.env.POSTGRES_PASSWORD || 'postgrespw';
 const DATABASE = process.env.POSTGRES_DB || 'z_prefix';
-const PORT = process.env.PORT || 49153;
+const PORT = process.env.PORT || 49157;
 
 module.exports = {
 

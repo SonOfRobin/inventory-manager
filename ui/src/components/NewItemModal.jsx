@@ -14,7 +14,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '50vh',
+  width: '75vh',
   bgcolor: 'background.paper',
   border: '2px solid #fff',
   boxShadow: 24,
@@ -22,7 +22,7 @@ const style = {
   flexGrow: 1,
 };
 
-const LoginModal = ({ isOpen, setIsOpen }) => {
+const NewItemModal = ({ isOpen, setIsOpen, uid }) => {
   const handleClose = () => setIsOpen(!isOpen);
 
   return (
@@ -38,25 +38,33 @@ const LoginModal = ({ isOpen, setIsOpen }) => {
       >
         <Fade in={isOpen}>
           <Box sx={style}>
-            <Form method='post' action='/login'>
+            <Form method='post'>
               <Grid2 container spacing={2}>
                 <Grid2 xs={6}>
                   <TextField
-                    focused
-                    label='Username'
+                    label='Product'
                     fullWidth
-                    inputProps={{ name: 'username', required: true }} />
+                    inputProps={{ name: 'product', required: true }} />
                 </Grid2>
                 <Grid2 xs={6}>
                   <TextField
-                    label='Password'
+                    label='Quantity'
                     fullWidth
-                    inputProps={{ name: 'password', type: 'password', required: true }} />
+                    inputProps={{ name: 'quantity', type: 'number', required: true }} />
                 </Grid2>
-                <Grid2 xs={10} />
-                <Grid2 xs={2}>
+                <Grid2 xs={12}>
+                  <TextField
+                    multiline
+                    label='Description'
+                    fullWidth
+                    inputProps={{ name: 'description', type: 'text', required: true }} />
+                </Grid2>
+                <Grid2 xs={10}>
+                  <input type='hidden' name='uid' value={uid} />
+                </Grid2>
+                <Grid2 xs={2} >
                   <Button variant='contained' color='secondary' type='submit'>
-                    Login
+                    Create
                   </Button>
                 </Grid2>
               </Grid2>
@@ -68,9 +76,10 @@ const LoginModal = ({ isOpen, setIsOpen }) => {
   );
 };
 
-LoginModal.propTypes = {
+NewItemModal.propTypes = {
   isOpen: PropTypes.bool,
   setIsOpen: PropTypes.func,
+  uid: PropTypes.number,
 };
 
-export default LoginModal;
+export default NewItemModal;
