@@ -116,7 +116,10 @@ const DataTable = ({ columns, user }) => {
   };
 
   const handleDeleteClick = (id) => () => {
-    setTableData(tableData.filter((row) => row.id !== id));
+    submit({ id }, { method: 'delete' });
+    setTableData(tableData.filter((row) => {
+      return row.id !== id;
+    }));
   };
 
   const handleCancelClick = (id) => () => {

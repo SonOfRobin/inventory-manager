@@ -31,6 +31,13 @@ const newItemAction = async ({ request }) => {
     console.log('New Item Action: ', res);
     return null;
   }
+  else if (request.method === 'DELETE') {
+    const { id } = Object.fromEntries(await request?.formData());
+    console.log('Delete method: ', id);
+    const res = await axios.delete(`http://localhost:8081/user/delete-item/${id}`);
+    console.log('New Item Action: ', res);
+    return null;
+  }
 };
 
 export default newItemAction;

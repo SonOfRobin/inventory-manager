@@ -114,4 +114,12 @@ app.put('/user/update-item', async (req, res) => {
     .then(result => res.json({ msg: `Item: ID:${id}-${item_name} has been updated \n${JSON.stringify(result)}` }));
 });
 
+app.delete('/user/delete-item/:id', async (req, res) => {
+  const { id } = req.params;
+  knex('items')
+    .where('id', id)
+    .del()
+    .then(result => res.json({ msg: `Item: ID:${id} has been deleted \n${JSON.stringify(result)}` }));
+});
+
 module.exports = app;
