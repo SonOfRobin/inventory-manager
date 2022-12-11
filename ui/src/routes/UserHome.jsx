@@ -19,17 +19,20 @@ const UserHome = () => {
 
   const columns = [
     {
+      field: 'id'
+    },
+    {
       field: 'item_name',
       editable: true,
       headerName: 'Product',
-      flex: .4,
+      flex: .3,
       headerAlign: 'center',
       align: 'center',
     },
     {
       field: 'description',
       headerName: 'Description',
-      flex: 1,
+      flex: .8,
       headerAlign: 'center',
       align: 'center',
       editable: true,
@@ -37,7 +40,7 @@ const UserHome = () => {
     {
       field: 'quantity',
       headerName: 'Quantity',
-      flex: .3,
+      flex: .1,
       headerAlign: 'center',
       align: 'center',
       editable: true,

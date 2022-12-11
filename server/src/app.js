@@ -91,15 +91,27 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/user/create-item', async (req, res) => {
-  const { product, description, quantity, user } = req.body;
+  const { user, item_name, description, quantity } = req.body;
   knex('items')
     .insert({
       user: user,
-      item_name: product,
+      item_name: item_name,
       description: description,
       quantity: Number.parseInt(quantity),
     }, ['id', 'item_name'])
-    .then(result => res.json({ msg: `Product: ${product} of quantity (${quantity})  has been added \n${JSON.stringify(result)}` }));
+    .then(result => res.json({ msg: `item_name: ${item_name} of quantity (${quantity})  has been added \n${JSON.stringify(result)}` }));
+});
+
+app.put('/user/update-item', async (req, res) => {
+  const { id, item_name, description, quantity } = req.body;
+  knex('items')
+    .where('id', id)
+    .update({
+      item_name: item_name,
+      description: description,
+      quantity: Number.parseInt(quantity),
+    }, ['id', 'item_name'])
+    .then(result => res.json({ msg: `Item: ID:${id}-${item_name} has been updated \n${JSON.stringify(result)}` }));
 });
 
 module.exports = app;

@@ -2,10 +2,10 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import {
   DataGrid,
-  GridToolbar,
   GridActionsCellItem,
   GridRowModes
 } from '@mui/x-data-grid';
+import ItemToolBar from './ItemToolBar';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
+import { useSubmit } from 'react-router-dom';
 
 
 const StyledGridOverlay = styled('div')(({ theme }) => ({
@@ -85,6 +86,7 @@ const CustomNoRowsOverlay = () => {
 const DataTable = ({ columns, user }) => {
   const [tableData, setTableData] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
+  const submit = useSubmit();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,8 +100,6 @@ const DataTable = ({ columns, user }) => {
   const handleRowEditStart = (params, e) => {
     e.defaultMuiPrevented = true;
     e.preventDefault();
-    console.log(e);
-    console.log(params);
   };
 
   const handleRowEditStop = (params, e) => {
@@ -116,7 +116,6 @@ const DataTable = ({ columns, user }) => {
   };
 
   const handleDeleteClick = (id) => () => {
-    console.log(id);
     setTableData(tableData.filter((row) => row.id !== id));
   };
 
@@ -133,8 +132,13 @@ const DataTable = ({ columns, user }) => {
   };
 
   const processRowUpdate = (newRow) => {
+    console.log('New Row', newRow);
     const updatedRow = { ...newRow, isNew: false };
-    setTableData(tableData.map((row) => (row.id === newRow.id ? updatedRow : row)));
+    setTableData(tableData.map((row) => {
+      if (row.id === newRow.id) console.log('Old row data', row);
+      return (row.id === newRow.id ? updatedRow : row);
+    }));
+    submit(newRow, { method: 'put' });
     return updatedRow;
   };
 
@@ -143,6 +147,7 @@ const DataTable = ({ columns, user }) => {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
+      flex: .1,
       cellClassName: 'actions',
       getActions: ({ id }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
@@ -159,7 +164,6 @@ const DataTable = ({ columns, user }) => {
               key={id}
               icon={<ClearIcon />}
               label="Cancel"
-              className="textPrimary"
               onClick={handleCancelClick(id)}
             />,
           ];
@@ -170,7 +174,6 @@ const DataTable = ({ columns, user }) => {
             key={id}
             icon={<EditIcon />}
             label="Edit"
-            className="textPrimary"
             onClick={handleEditClick(id)}
           />,
           <GridActionsCellItem
@@ -189,11 +192,18 @@ const DataTable = ({ columns, user }) => {
       sx={{ bgcolor: '#888888' }}
       components={{
         NoRowsOverlay: CustomNoRowsOverlay,
-        Toolbar: GridToolbar,
+        Toolbar: ItemToolBar,
       }}
-      getRowClassName={(params) =>
-        params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
-      }
+      initialState={{
+        sorting: {
+          sortModel: [{ field: 'id', sort: 'asc' }]
+        },
+        columns: {
+          columnVisibilityModel: {
+            id: false,
+          },
+        }
+      }}
       rows={tableData}
       columns={[...columns, ...userActions]}
       editMode='row'
@@ -202,9 +212,6 @@ const DataTable = ({ columns, user }) => {
       onRowEditStart={handleRowEditStart}
       onRowEditStop={handleRowEditStop}
       processRowUpdate={processRowUpdate}
-      componentsProps={{
-        toolbar: { setTableData, setRowModesModel },
-      }}
       experimentalFeatures={{ newEditingApi: true }}
     />
   );
