@@ -95,7 +95,7 @@ const DataTable = ({ columns, user }) => {
       setTableData(res.data);
     };
     if (user.auth) fetchData();
-  }, [user.id, user.auth]);
+  }, []);
 
   const StripedDataGrid = styled(DataGrid)(() => ({
     [`& .${gridClasses.row}.even`]: {
@@ -106,12 +106,13 @@ const DataTable = ({ columns, user }) => {
     },
   }));
 
-  const handleRowEditStart = (params, event) => {
-    event.defaultMuiPrevented = true;
+  const handleRowEditStart = (params, e) => {
+    e.defaultMuiPrevented = true;
+    console.log(e);
   };
 
-  const handleRowEditStop = (params, event) => {
-    event.defaultMuiPrevented = true;
+  const handleRowEditStop = (params, e) => {
+    e.defaultMuiPrevented = true;
   };
 
   const handleEditClick = (id) => () => {
@@ -123,6 +124,7 @@ const DataTable = ({ columns, user }) => {
   };
 
   const handleDeleteClick = (id) => () => {
+    console.log(id);
     setTableData(tableData.filter((row) => row.id !== id));
   };
 
@@ -157,7 +159,7 @@ const DataTable = ({ columns, user }) => {
             <GridActionsCellItem
               key={params.id}
               icon={<SaveAltIcon />}
-              label="Save"
+              label='Save'
               onClick={handleSaveClick(params.id)}
             />,
             <GridActionsCellItem
@@ -199,15 +201,10 @@ const DataTable = ({ columns, user }) => {
         NoRowsOverlay: CustomNoRowsOverlay,
         Toolbar: GridToolbar,
       }}
-      initialState={{
-        pagination: {
-          pageSize: 25,
-        },
-      }}
       getRowClassName={(params) =>
         params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
       }
-      editMode="row"
+      editMode='row'
       rowModesModel={rowModesModel}
       onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
       onRowEditStart={handleRowEditStart}
@@ -215,7 +212,6 @@ const DataTable = ({ columns, user }) => {
       processRowUpdate={processRowUpdate}
       columns={[...columns, ...userActions]}
       rows={tableData}
-      disableSelectionOnClick
       rowsPerPageOptions={[25, 50, 100]}
       experimentalFeatures={{ newEditingApi: true }}
     />
