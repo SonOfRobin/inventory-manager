@@ -2,7 +2,6 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import {
   DataGrid,
-  gridClasses,
   GridToolbar,
   GridActionsCellItem,
   GridRowModes
@@ -83,7 +82,6 @@ const CustomNoRowsOverlay = () => {
   );
 };
 
-
 const DataTable = ({ columns, user }) => {
   const [tableData, setTableData] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
@@ -97,22 +95,16 @@ const DataTable = ({ columns, user }) => {
     if (user.auth) fetchData();
   }, []);
 
-  const StripedDataGrid = styled(DataGrid)(() => ({
-    [`& .${gridClasses.row}.even`]: {
-      backgroundColor: '#cfcfcf',
-    },
-    [`& .${gridClasses.row}.odd`]: {
-      backgroundColor: '#888888',
-    },
-  }));
-
   const handleRowEditStart = (params, e) => {
     e.defaultMuiPrevented = true;
+    e.preventDefault();
     console.log(e);
+    console.log(params);
   };
 
   const handleRowEditStop = (params, e) => {
     e.defaultMuiPrevented = true;
+    e.preventDefault();
   };
 
   const handleEditClick = (id) => () => {
@@ -151,43 +143,41 @@ const DataTable = ({ columns, user }) => {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
-      getActions: (params) => {
-        const isInEditMode = rowModesModel[params.id]?.mode === GridRowModes.Edit;
+      cellClassName: 'actions',
+      getActions: ({ id }) => {
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
         if (isInEditMode) {
           return [
             <GridActionsCellItem
-              key={params.id}
+              key={id}
               icon={<SaveAltIcon />}
               label='Save'
-              onClick={handleSaveClick(params.id)}
+              onClick={handleSaveClick(id)}
             />,
             <GridActionsCellItem
-              key={params.id}
+              key={id}
               icon={<ClearIcon />}
               label="Cancel"
               className="textPrimary"
-              onClick={handleCancelClick(params.id)}
-              color="inherit"
+              onClick={handleCancelClick(id)}
             />,
           ];
         }
 
         return [
           <GridActionsCellItem
-            key={params.id}
+            key={id}
             icon={<EditIcon />}
             label="Edit"
             className="textPrimary"
-            onClick={handleEditClick(params.id)}
-            color="inherit"
+            onClick={handleEditClick(id)}
           />,
           <GridActionsCellItem
-            key={params.id}
+            key={id}
             icon={<DeleteIcon />}
             label="Delete"
-            onClick={handleDeleteClick(params.id)}
-            color="inherit"
+            onClick={handleDeleteClick(id)}
           />,
         ];
       }
@@ -195,7 +185,7 @@ const DataTable = ({ columns, user }) => {
   ];
 
   return (
-    <StripedDataGrid
+    <DataGrid
       sx={{ bgcolor: '#888888' }}
       components={{
         NoRowsOverlay: CustomNoRowsOverlay,
@@ -204,15 +194,17 @@ const DataTable = ({ columns, user }) => {
       getRowClassName={(params) =>
         params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
       }
+      rows={tableData}
+      columns={[...columns, ...userActions]}
       editMode='row'
       rowModesModel={rowModesModel}
       onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
       onRowEditStart={handleRowEditStart}
       onRowEditStop={handleRowEditStop}
       processRowUpdate={processRowUpdate}
-      columns={[...columns, ...userActions]}
-      rows={tableData}
-      rowsPerPageOptions={[25, 50, 100]}
+      componentsProps={{
+        toolbar: { setTableData, setRowModesModel },
+      }}
       experimentalFeatures={{ newEditingApi: true }}
     />
   );
