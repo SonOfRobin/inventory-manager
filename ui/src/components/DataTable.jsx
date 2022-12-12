@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useSubmit } from 'react-router-dom';
+import DetailsModal from './DetailsModal';
 
 
 const StyledGridOverlay = styled('div')(({ theme }) => ({
@@ -85,7 +86,14 @@ const CustomNoRowsOverlay = () => {
 const DataTable = ({ columns, user, itemBar }) => {
   const [tableData, setTableData] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
+  const [openModal, setOpenModal] = useState(false);
+  const [data, setData] = useState({});
   const submit = useSubmit();
+
+  const handleRowClick = ({ id, row, columns }) => {
+    setData({ id: id, row: row, columns: columns });
+    setOpenModal(!openModal);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -190,32 +198,36 @@ const DataTable = ({ columns, user, itemBar }) => {
   ];
 
   return (
-    <DataGrid
-      sx={{ bgcolor: '#888888' }}
-      components={{
-        NoRowsOverlay: CustomNoRowsOverlay,
-        Toolbar: itemBar,
-      }}
-      initialState={{
-        sorting: {
-          sortModel: [{ field: 'id', sort: 'asc' }]
-        },
-        columns: {
-          columnVisibilityModel: {
-            id: false,
+    <>
+      <DetailsModal isOpen={openModal} setIsOpen={setOpenModal} data={data} />
+      <DataGrid
+        sx={{ bgcolor: '#888888' }}
+        components={{
+          NoRowsOverlay: CustomNoRowsOverlay,
+          Toolbar: itemBar,
+        }}
+        initialState={{
+          sorting: {
+            sortModel: [{ field: 'id', sort: 'asc' }]
           },
-        }
-      }}
-      rows={tableData}
-      columns={[...columns, ...userActions]}
-      editMode='row'
-      rowModesModel={rowModesModel}
-      onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
-      onRowEditStart={handleRowEditStart}
-      onRowEditStop={handleRowEditStop}
-      processRowUpdate={processRowUpdate}
-      experimentalFeatures={{ newEditingApi: true }}
-    />
+          columns: {
+            columnVisibilityModel: {
+              id: false,
+            },
+          }
+        }}
+        rows={tableData}
+        columns={[...columns, ...userActions]}
+        editMode='row'
+        rowModesModel={rowModesModel}
+        onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
+        onRowEditStart={handleRowEditStart}
+        onRowEditStop={handleRowEditStop}
+        processRowUpdate={processRowUpdate}
+        onRowClick={handleRowClick}
+        experimentalFeatures={{ newEditingApi: true }}
+      />
+    </>
   );
 };
 

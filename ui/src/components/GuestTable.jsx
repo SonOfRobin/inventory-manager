@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { DataGrid } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
@@ -8,7 +8,7 @@ import {
   GridToolbarFilterButton,
   GridToolbarDensitySelector,
 } from '@mui/x-data-grid';
-
+import DetailsModal from './DetailsModal';
 
 const ItemToolBar = () => {
   return (
@@ -18,6 +18,8 @@ const ItemToolBar = () => {
     </GridToolbarContainer>
   );
 };
+
+
 
 
 const StyledGridOverlay = styled('div')(({ theme }) => ({
@@ -86,29 +88,39 @@ const CustomNoRowsOverlay = () => {
 };
 
 const GuestTable = ({ columns, rows }) => {
-  console.log(rows);
+  const [openModal, setOpenModal] = useState(false);
+  const [data, setData] = useState({});
+  const handleRowClick = ({ id, row, columns }) => {
+    setData({ id: id, row: row, columns: columns });
+    setOpenModal(!openModal);
+  };
+
   return (
-    <DataGrid
-      sx={{ bgcolor: '#888888' }}
-      components={{
-        NoRowsOverlay: CustomNoRowsOverlay,
-        Toolbar: ItemToolBar,
-      }}
-      initialState={{
-        sorting: {
-          sortModel: [{ field: 'id', sort: 'asc' }]
-        },
-        columns: {
-          columnVisibilityModel: {
-            id: false,
-            firstName: false,
-            lastName: false,
+    <>
+      <DetailsModal isOpen={openModal} setIsOpen={setOpenModal} data={data} />
+      <DataGrid
+        sx={{ bgcolor: '#888888' }}
+        components={{
+          NoRowsOverlay: CustomNoRowsOverlay,
+          Toolbar: ItemToolBar,
+        }}
+        initialState={{
+          sorting: {
+            sortModel: [{ field: 'id', sort: 'asc' }]
           },
-        }
-      }}
-      rows={rows}
-      columns={columns}
-    />
+          columns: {
+            columnVisibilityModel: {
+              id: false,
+              firstName: false,
+              lastName: false,
+            },
+          }
+        }}
+        onRowClick={handleRowClick}
+        rows={rows}
+        columns={columns}
+      />
+    </>
   );
 };
 
