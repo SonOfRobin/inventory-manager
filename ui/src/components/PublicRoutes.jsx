@@ -33,14 +33,13 @@ const PublicRoutes = () => {
         <Outlet context={[user, setUser]} />
       </Box>
       <Box
+        width='100%'
         component='footer'
+        height='fit-content'
         position='absolute'
-        bottom='3%'
-        left='30%'
-        right='30%'
+        bottom='0%'
         display='flex'
         textAlign='center'
-        flexWrap='wrap'
         justifyContent='center'
       >
         {footerText}

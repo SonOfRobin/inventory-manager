@@ -21,21 +21,31 @@ const ProtectedRoutes = () => {
   }, [user]);
 
   return (
-    <Box className='route-layout' height='100vh'>
+    <Box className='page'>
       <Navbar />
-      <Box className='page-content' width={1} >
+      <Box
+        className='content'
+        position='absolute'
+        left='10%'
+        right='10%'
+        display='flex'
+        flexDirection='column'
+        justifyContent='center'
+      >
         <Outlet context={[user, setUser]} />
       </Box>
-      <footer
-        style={{
-          display: 'flex',
-          textAlign: 'center',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-        }}
+      <Box
+        width='100%'
+        component='footer'
+        height='fit-content'
+        position='absolute'
+        bottom='0%'
+        display='flex'
+        textAlign='center'
+        justifyContent='space-around'
       >
         {footerText}
-      </footer>
+      </Box>
     </Box>
   );
 

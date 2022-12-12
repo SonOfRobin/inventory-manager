@@ -20,28 +20,30 @@ const Login = () => {
   }, [test]);
 
   return (
-    <Box >
-      <Form method='post'>
-        <Grid2 container spacing={2}>
-          <Grid2 xs={6}>
-            <TextField
-              label='Username'
-              fullWidth
-              inputProps={{ name: 'username', required: true }} />
-          </Grid2>
-          <Grid2 xs={6}>
-            <TextField
-              label='Password'
-              fullWidth
-              inputProps={{ name: 'password', type: 'password', required: true }} />
-          </Grid2>
-          <Grid2 xs={7} />
-          <Grid2 xs={5}>
-            <Button variant='contained' color='secondary' type='submit'>
-              Login
-            </Button>
-          </Grid2>
-        </Grid2>
+    <Box
+      className='login'
+      display='flex'
+      flexDirection='column'
+      alignContent='center'
+      flexWrap='wrap'
+    >
+      <Form
+        style={{ display: 'contents' }}
+        method='post'>
+        <TextField
+          sx={{ width: '20%', mr: 3 }}
+          label='Username'
+          inputProps={{ name: 'username', required: true }} />
+        <TextField
+          sx={{ width: '20%', mr: 3 }}
+          label='Password'
+          inputProps={{ name: 'password', type: 'password', required: true }} />
+        <Button
+          sx={{ width: '20%' }}
+          variant='contained'
+          type='submit'>
+          Login
+        </Button>
       </Form>
     </Box>
   );

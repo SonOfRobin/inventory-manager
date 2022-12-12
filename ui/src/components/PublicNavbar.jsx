@@ -18,6 +18,7 @@ const PublicNavbar = () => {
   const handleLog = (e) => {
     e.preventDefault();
     console.log(e);
+    navigate('/login');
   };
 
   const handleHome = (e) => {
@@ -32,9 +33,7 @@ const PublicNavbar = () => {
       <AppBar
         sx={{
           overflow: 'hidden',
-          m: 0,
           mb: 2,
-          p: 0,
         }}
         position='static'
       >

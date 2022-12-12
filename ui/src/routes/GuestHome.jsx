@@ -61,7 +61,7 @@ const GuestHome = () => {
       overflow='hidden'
       flexDirection='column'
       alignContent='center'
-      justifyContent='flex-start'
+      justifyContent='space-evenly'
     >
       <h1>Welcome, Guest</h1>
       <Box

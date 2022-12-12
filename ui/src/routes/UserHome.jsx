@@ -32,14 +32,14 @@ const UserHome = () => {
       field: 'item_name',
       editable: true,
       headerName: 'Product',
-      flex: .3,
+      flex: .2,
       headerAlign: 'center',
       align: 'center',
     },
     {
       field: 'description',
       headerName: 'Description',
-      flex: .8,
+      flex: .7,
       headerAlign: 'center',
       align: 'center',
       editable: true,
@@ -47,7 +47,7 @@ const UserHome = () => {
     {
       field: 'quantity',
       headerName: 'Quantity',
-      flex: .1,
+      flex: .08,
       headerAlign: 'center',
       align: 'center',
       editable: true,
@@ -80,13 +80,13 @@ const UserHome = () => {
   return (
     <Box
       className='user-home'
-      height='100vh'
+      height='100%'
       display='flex'
       flexWrap='wrap'
       overflow='hidden'
       flexDirection='column'
       alignContent='center'
-      justifyContent='center'
+      justifyContent='space-evenly'
     >
       <h1>{`Login successful!!. Welcome, ${user.user}`}</h1>
       <Box
