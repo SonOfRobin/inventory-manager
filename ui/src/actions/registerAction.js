@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { redirect } from 'react-router-dom';
 
 const registerAction = async ({ request }) => {
 
@@ -20,7 +21,7 @@ const registerAction = async ({ request }) => {
       password: password,
     });
   return (
-    `${firstName}\n${lastName}\n${email}\n${username}\n${password}`
+    redirect('/')
   );
 };
 

@@ -1,16 +1,19 @@
 import React from 'react';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import { Form, useActionData } from 'react-router-dom';
+import { Form, useActionData, useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
 const Register = () => {
   const test = useActionData();
+  const handleSubmit = () => {
+    console.log('hi');
+  };
 
   console.log(test);
   return (
     <>
-      <Form method='post'>
+      <Form method='post' onSubmit={handleSubmit}>
         <Grid2 container spacing={2}>
           <Grid2 xs={6}>
             <TextField
