@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { Outlet, useNavigate, useOutletContext } from 'react-router-dom';
+import PublicNavbar from './PublicNavbar';
 
 const PublicRoutes = () => {
   const [user, setUser] = useOutletContext();
@@ -12,7 +13,12 @@ const PublicRoutes = () => {
     if (user.auth) navigate('/main');
   }, [user]);
 
-  return <Outlet context={[user, setUser]} />;
+  return (
+    <>
+      <PublicNavbar />
+      <Outlet context={[user, setUser]} />
+    </>
+  );
 
 };
 

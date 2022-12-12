@@ -23,13 +23,31 @@ app.get('/', (request, response) => {
 
 app.get('/users', (req, res) => {
   knex('users')
-    .select('*')
+    .select('f_name', 'l_name')
     .then(users => {
       console.log(users);
       let responseData = users.map(user => ({
         firstName: user.f_name,
         lastName: user.l_name,
-        username: user.username,
+      }));
+      res.status(200).send(responseData);
+    });
+
+});
+
+app.get('/guest', (req, res) => {
+  knex('items')
+    .join('users', 'users.id', 'items.user')
+    .select('f_name', 'l_name', 'items.id', 'item_name', 'description', 'quantity')
+    .then(items => {
+      console.log(items);
+      let responseData = items.map(item => ({
+        id: item.id,
+        firstName: item.f_name,
+        lastName: item.l_name,
+        itemName: item.item_name,
+        description: item.description,
+        quantity: item.quantity,
       }));
       res.status(200).send(responseData);
     });

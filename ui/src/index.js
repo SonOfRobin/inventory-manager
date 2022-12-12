@@ -20,6 +20,8 @@ import Register from './routes/Register';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import PublicRoutes from './components/PublicRoutes';
 import CreationBanner from './components/CreationBanner';
+import GuestHome from './routes/GuestHome';
+import getAll from './loaders/getAll';
 
 
 
@@ -51,6 +53,11 @@ const router = createBrowserRouter([
             path: '/register',
             element: <Register />,
             action: registerAction,
+          },
+          {
+            path: '/guest',
+            element: <GuestHome />,
+            loader: getAll
           },
         ],
       },

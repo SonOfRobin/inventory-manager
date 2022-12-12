@@ -28,6 +28,11 @@ const Root = () => {
     setLogModal(!logModal);
   };
 
+  const handleGuest = (e) => {
+    e.preventDefault();
+    navigate('/guest');
+  };
+
   console.log('Root context obj: ', user);
 
 
@@ -44,6 +49,13 @@ const Root = () => {
         alignItems="center"
         spacing={2}
       >
+        <Button
+          aria-label='guest-login'
+          variant='contained'
+          onClick={handleGuest}
+        >
+          Guest
+        </Button>
         <Button
           aria-label='login'
           variant='contained'

@@ -2,36 +2,32 @@ import AppBar from '@mui/material/AppBar';
 import ToolBar from '@mui/material/Toolbar';
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
-import { useOutletContext } from 'react-router-dom';
-
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 const Navbar = () => {
-  const [user] = useOutletContext();
-  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [user, setUser] = useOutletContext();
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const navigate = useNavigate();
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleLogout = () => {
+    setAnchorElUser(null);
+    sessionStorage.clear();
+    navigate('/');
+    setUser({ auth: '', user: '' });
   };
 
   return (
@@ -39,43 +35,32 @@ const Navbar = () => {
       <AppBar position='static'>
         <ToolBar>
           <Box sx={{ flexGrow: 1, display: 'flex' }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
           </Box>
           <Box>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar sx={{ color: '#32a852', bgcolor: 'secondary' }} >{user.user[0]}</Avatar>
+                <Avatar sx={{ color: '#32a852', bgcolor: 'secondary' }} >{user.user[0]?.toUpperCase()}</Avatar>
               </IconButton>
             </Tooltip>
             <Menu
-              id="menu-appbar"
+              id="account-settings"
               anchorEl={anchorElUser}
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right',
+                horizontal: 'left',
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'bottom',
+                vertical: 'top',
                 horizontal: 'right',
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((option) => (
-                <MenuItem key={option} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{option}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleLogout}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
+
             </Menu>
           </Box>
         </ToolBar>
