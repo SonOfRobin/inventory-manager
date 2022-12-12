@@ -5,7 +5,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { createBrowserRouter, RouterProvider, useFetcher } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Root from './routes/Root';
 import registerAction from './actions/registerAction';
 import loginAction from './actions/loginAction';
@@ -20,6 +20,7 @@ import Register from './routes/Register';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import PublicRoutes from './components/PublicRoutes';
 import CreationBanner from './components/CreationBanner';
+import GlobalView from './routes/GlobalView';
 import GuestHome from './routes/GuestHome';
 import getAll from './loaders/getAll';
 
@@ -57,7 +58,7 @@ const router = createBrowserRouter([
           {
             path: '/guest',
             element: <GuestHome />,
-            loader: getAll
+            loader: getAll,
           },
         ],
       },
@@ -69,14 +70,13 @@ const router = createBrowserRouter([
             element: <UserHome />,
             errorElement: <ErrorPage />,
             action: newItemAction,
-            children: [
-              // {
-              //   path: '/main/create-success',
-              //   action: newItemAction,
-              //   element: <CreationBanner type='success' />,
-              // },
-            ]
           },
+          {
+            path: '/global-view',
+            element: <GlobalView />,
+            errorElement: <ErrorPage />,
+            loader: getAll,
+          }
         ]
       },
     ]

@@ -4,7 +4,6 @@ import { useOutletContext } from 'react-router-dom';
 import DataTable from '../components/DataTable';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
 import AddIcon from '@mui/icons-material/Add';
 import NewItemModal from '../components/NewItemModal';
 import {
@@ -64,8 +63,7 @@ const UserHome = () => {
     >
       Product
     </Button>
-  )
-
+  );
 
   const ItemToolBar = () => {
     return (
@@ -88,7 +86,7 @@ const UserHome = () => {
       alignContent='center'
       justifyContent='space-evenly'
     >
-      <h1>{`Login successful!!. Welcome, ${user.user}`}</h1>
+      <h1>Your Inventory</h1>
       <Box
         className='grid'
         height='80%'

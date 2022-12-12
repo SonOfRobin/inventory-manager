@@ -8,6 +8,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
+import CottageOutlinedIcon from '@mui/icons-material/CottageOutlined';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 
 const Navbar = () => {
@@ -30,6 +31,14 @@ const Navbar = () => {
     setUser({ auth: '', user: '' });
   };
 
+  const handleGlobalView = () => {
+    navigate('/global-view');
+  };
+
+  const handleUserView = () => {
+    navigate('/main');
+  };
+
   return (
     <>
       <AppBar
@@ -40,6 +49,9 @@ const Navbar = () => {
         position='static'
       >
         <ToolBar>
+          <IconButton onClick={handleGlobalView} sx={{ p: 0 }}>
+            <CottageOutlinedIcon fontSize='large' />
+          </IconButton>
           <Box sx={{ flexGrow: 1, display: 'flex' }}>
           </Box>
           <Box>
@@ -63,10 +75,12 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
+              <MenuItem onClick={handleUserView}>
+                <Typography textAlign="center">Your Inventory</Typography>
+              </MenuItem>
               <MenuItem onClick={handleLogout}>
                 <Typography textAlign="center">Logout</Typography>
               </MenuItem>
-
             </Menu>
           </Box>
         </ToolBar>

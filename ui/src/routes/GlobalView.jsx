@@ -1,9 +1,10 @@
 import React from 'react';
 import GuestTable from '../components/GuestTable';
 import Box from '@mui/material/Box';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useOutletContext } from 'react-router-dom';
 
-const GuestHome = () => {
+const GlobalView = () => {
+  const [user] = useOutletContext();
   const { data } = useLoaderData();
 
   function getFullName(params) {
@@ -63,7 +64,7 @@ const GuestHome = () => {
       alignContent='center'
       justifyContent='space-evenly'
     >
-      <h1>Guest View</h1>
+      <h1>Global View</h1>
       <Box
         className='grid'
         height='80%'
@@ -79,4 +80,4 @@ const GuestHome = () => {
   );
 };
 
-export default GuestHome;
+export default GlobalView;
