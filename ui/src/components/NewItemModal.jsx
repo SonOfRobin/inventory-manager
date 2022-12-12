@@ -63,7 +63,7 @@ const NewItemModal = ({ isOpen, setIsOpen, uid }) => {
                   <input type='hidden' name='uid' value={uid} />
                 </Grid2>
                 <Grid2 xs={2} >
-                  <Button variant='contained' color='secondary' type='submit'>
+                  <Button variant='contained' color='secondary' type='submit' onClick={handleClose}>
                     Create
                   </Button>
                 </Grid2>

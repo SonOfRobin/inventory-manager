@@ -19,7 +19,6 @@ import Login from './routes/Login';
 import Register from './routes/Register';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import PublicRoutes from './components/PublicRoutes';
-import CreationBanner from './components/CreationBanner';
 import GlobalView from './routes/GlobalView';
 import GuestHome from './routes/GuestHome';
 import getAll from './loaders/getAll';
@@ -34,13 +33,6 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Root />,
-        // action: async (e) => {
-        //   console.log(e);
-        //   console.log(e?.request);
-        //   console.log(Object.fromEntries(await e?.request.formData()));
-        //   console.log((e?.request.body));
-        //   return registerAction;
-        //},
       },
       {
         element: <PublicRoutes />,

@@ -86,7 +86,7 @@ app.post('/login', async (req, res) => {
   const plain = req.body.password;
   knex('users')
     .select('username', 'password', 'id')
-    .where('username', username)
+    .where('username', username.toLowerCase())
     .then(result => {
       if (result[0]) {
         console.log(result[0]);
