@@ -55,13 +55,13 @@ const GuestHome = () => {
   return (
     <Box
       className='guest-home'
-      height='100vh'
+      height='100%'
       display='flex'
       flexWrap='wrap'
       overflow='hidden'
       flexDirection='column'
       alignContent='center'
-      justifyContent='center'
+      justifyContent='flex-start'
     >
       <h1>Welcome, Guest</h1>
       <Box

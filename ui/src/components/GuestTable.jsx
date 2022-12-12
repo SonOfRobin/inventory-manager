@@ -1,9 +1,24 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import { DataGrid } from '@mui/x-data-grid';
-import ItemToolBar from './ItemToolBar';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
+import {
+  GridToolbarContainer,
+  GridToolbarFilterButton,
+  GridToolbarDensitySelector,
+} from '@mui/x-data-grid';
+
+
+const ItemToolBar = () => {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarFilterButton />
+      <GridToolbarDensitySelector />
+    </GridToolbarContainer>
+  );
+};
+
 
 const StyledGridOverlay = styled('div')(({ theme }) => ({
   display: 'flex',

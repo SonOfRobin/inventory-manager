@@ -6,6 +6,12 @@ import LoginModal from '../components/LoginModal';
 import RegisterModal from '../components/RegisterModal';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 
+const footerText =
+  `Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+ Ut id aliquet eros. Etiam sollicitudin auctor sagittis. 
+ Maecenas a elit urna. Nullam sit amet neque mi. 
+ Donec ut quam tincidunt, laoreet.`;
+
 const Root = () => {
   const [regModal, setRegModal] = useState(false);
   const [logModal, setLogModal] = useState(false);
@@ -68,11 +74,25 @@ const Root = () => {
           variant='contained'
           onClick={handleClick}
         >
-          Signup
+          Sign Up
         </Button>
       </Stack>
       <LoginModal isOpen={logModal} setIsOpen={setLogModal} />
       <RegisterModal isOpen={regModal} setIsOpen={setRegModal} />
+      <footer className='footer'
+        style={{
+          position: 'absolute',
+          bottom: '5%',
+          left: '30%',
+          right: '30%',
+          display: 'flex',
+          textAlign: 'center',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+        }}
+      >
+        {footerText}
+      </footer>
     </Box>
   );
 };

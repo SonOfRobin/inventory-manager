@@ -5,7 +5,6 @@ import {
   GridActionsCellItem,
   GridRowModes
 } from '@mui/x-data-grid';
-import ItemToolBar from './ItemToolBar';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -83,7 +82,7 @@ const CustomNoRowsOverlay = () => {
   );
 };
 
-const DataTable = ({ columns, user }) => {
+const DataTable = ({ columns, user, itemBar }) => {
   const [tableData, setTableData] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const submit = useSubmit();
@@ -195,7 +194,7 @@ const DataTable = ({ columns, user }) => {
       sx={{ bgcolor: '#888888' }}
       components={{
         NoRowsOverlay: CustomNoRowsOverlay,
-        Toolbar: ItemToolBar,
+        Toolbar: itemBar,
       }}
       initialState={{
         sorting: {
@@ -223,5 +222,6 @@ const DataTable = ({ columns, user }) => {
 DataTable.propTypes = {
   columns: PropTypes.array,
   user: PropTypes.object,
+  itemBar: PropTypes.func,
 };
 export default DataTable;

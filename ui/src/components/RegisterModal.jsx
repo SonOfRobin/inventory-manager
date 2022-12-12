@@ -46,7 +46,7 @@ const RegisterModal = ({ isOpen, setIsOpen }) => {
         <Fade in={isOpen}>
           <Box sx={style}>
             <Form method='post' action='/register'>
-              <Grid2 container spacing={2}>
+              <Grid2 container spacing={2} maxWidth='50vh'>
                 <Grid2 xs={6}>
                   <TextField
                     label='First Name'
@@ -77,10 +77,10 @@ const RegisterModal = ({ isOpen, setIsOpen }) => {
                     fullWidth
                     inputProps={{ name: 'password', type: 'password', required: true }} />
                 </Grid2>
-                <Grid2 xs={10} />
-                <Grid2 xs={2}>
+                <Grid2 xs={9} />
+                <Grid2 xs={3}>
                   <Button variant='contained' color='secondary' type='submit'>
-                    Create Account
+                    Sign Up
                   </Button>
                 </Grid2>
               </Grid2>

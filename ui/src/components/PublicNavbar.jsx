@@ -1,18 +1,18 @@
 import AppBar from '@mui/material/AppBar';
 import ToolBar from '@mui/material/Toolbar';
-import React, { useState } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 
 const PublicNavbar = () => {
   const navigate = useNavigate();
 
-  const handleClick = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
     console.log(e);
+    navigate('/register');
   };
 
   const handleLog = (e) => {
@@ -20,15 +20,24 @@ const PublicNavbar = () => {
     console.log(e);
   };
 
-  const handleGuest = (e) => {
+  const handleHome = (e) => {
     e.preventDefault();
     console.log(e);
+    navigate('/');
   };
 
 
   return (
     <>
-      <AppBar position='static'>
+      <AppBar
+        sx={{
+          overflow: 'hidden',
+          m: 0,
+          mb: 2,
+          p: 0,
+        }}
+        position='static'
+      >
         <ToolBar>
           <Box sx={{ flexGrow: 1, display: 'flex' }}>
           </Box>
@@ -42,9 +51,9 @@ const PublicNavbar = () => {
               <Button
                 aria-label='guest-login'
                 variant='contained'
-                onClick={handleGuest}
+                onClick={handleHome}
               >
-                Guest
+                Home
               </Button>
               <Button
                 aria-label='login'
@@ -56,7 +65,7 @@ const PublicNavbar = () => {
               <Button
                 aria-label='sign-up'
                 variant='contained'
-                onClick={handleClick}
+                onClick={handleRegister}
               >
                 Signup
               </Button>

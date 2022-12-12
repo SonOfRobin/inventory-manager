@@ -7,6 +7,13 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import AddIcon from '@mui/icons-material/Add';
 import NewItemModal from '../components/NewItemModal';
+import {
+  GridToolbarContainer,
+  GridToolbarFilterButton,
+  GridToolbarDensitySelector,
+} from '@mui/x-data-grid';
+
+
 
 const UserHome = () => {
   const [user] = useOutletContext();
@@ -48,6 +55,28 @@ const UserHome = () => {
     },
   ];
 
+  const NewProduct = () => (
+    <Button
+      onClick={handleModal}
+      variant='contained'
+      color='primary'
+      startIcon={<AddIcon />}
+    >
+      Product
+    </Button>
+  )
+
+
+  const ItemToolBar = () => {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarFilterButton />
+        <GridToolbarDensitySelector />
+        <NewProduct />
+      </GridToolbarContainer>
+    );
+  };
+
   return (
     <Box
       className='user-home'
@@ -66,23 +95,8 @@ const UserHome = () => {
         width={.8}
         flexDirection='column'
       >
-        <Stack
-          direction="row"
-          justifyContent="flex-end"
-          alignItems="center"
-          spacing={2}
-          mb={2}
-        >
-          <Button
-            onClick={handleModal}
-            variant='contained'
-            color='primary'
-            startIcon={<AddIcon />}
-          >
-            Product
-          </Button>
-        </Stack>
         <DataTable
+          itemBar={ItemToolBar}
           user={user}
           columns={columns}
         />

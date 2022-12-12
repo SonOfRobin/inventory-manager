@@ -4,15 +4,11 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import { Form, useActionData } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useEffect } from 'react';
 
 const Register = () => {
-
   const test = useActionData();
+
   console.log(test);
-  useEffect(() => {
-    console.log('use effect: ', test);
-  })
   return (
     <Box >
       <Form method='post'>
@@ -47,8 +43,8 @@ const Register = () => {
               fullWidth
               inputProps={{ name: 'password', type: 'password', required: true }} />
           </Grid2>
-          <Grid2 xs={7} />
-          <Grid2 xs={5}>
+          <Grid2 xs={10} />
+          <Grid2 xs={2}>
             <Button variant='contained' color='secondary' type='submit'>
               Create Account
             </Button>
